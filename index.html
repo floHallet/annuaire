@@ -3,87 +3,98 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mon répertoire</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <title>Mon annuaire</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="./css/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
-    <script src="./js/donneesContacts.js" defer></script>
-    <script src="./js/liveDom.js" defer></script>
+    <script src="./js/donneesContacts.js" async></script>
+    <script src="./js/liveDom.js" async></script>
   </head>
-  <body>
+  <body class="bg-light">
     <header class="container">
       <div class="row">
         <h1 class="text-center p-2">Mes contacts</h1>
       </div>
       <div class="row">
-        <div class="lettersGroup"></div>
+        <div class="lettersGroup border-top d-flex flex-wrap justify-content-evenly"></div>
       </div>
     </header>
 
     <div id="template" hidden>
       <span class="nom"></span>
       <span class="prenom"></span>
-      <button>✖</button>
+      <button class="btn btn-sm btn-outline-light">✖</button>
     </div>
 
     <main class="container">
       <div class="row">
-        <div id="list" class="col p-2 list-group overflow-scroll"></div>
-        <div class="col">
+        <div id="list" class="col-md-6 p-2 overflow-scroll"></div>
+        <div class="col-md-6">
           <!--  Code formulaire -->
           <div class="container">
-            <form id="monForm">
+            <form id="monForm" class="mt-4">
+              <h4>Formulaire d'ajout de contact :</h4>
               <div class="row mb-2 ">
-                <input class=" col form-control fnom" type="text" placeholder="Nom" required>
-                <input class=" col form-control fprenom" type="text" placeholder="Prénom" required>
+                <input class="col m-1 form-control fnom" type="text" placeholder="Nom" required>
+                <input class="col m-1 form-control fprenom" type="text" placeholder="Prénom" required>
               </div>
               <div class="row mb-2">
-                <input class=" col form-control date" type="date" placeholder="Date de naissance" required>
+                <input class="col m-1 form-control date" type="date">
                 <div class="col"></div>
               </div>
               <div class="row mb-2">
-                <input class="col form-control tel" type="text" placeholder="Téléphone" required>
-                <input class="col form-control mail" type="email" placeholder="E-mail" required>
+                <input class="col m-1 form-control tel" type="tel" placeholder="Téléphone">
+                <input class="col m-1 form-control mail" type="email" placeholder="E-mail">
               </div>
               <div class="row mb-2">
-                <input class="col form-control adresse" type="text" placeholder="Adresse" required>
-                <input class="col form-control info_sup" type="text" placeholder="Info supplémentaire adresse">
+                <input class="col m-1 form-control adresse" type="text" placeholder="Adresse">
+                <input class="col m-1 form-control info_sup" type="text" placeholder="Info supplémentaire">
               </div>
               <div class="row mb-2">
-                <input class="col form-control code_post" type="number" placeholder="Code postal" required>
+                <input class="col m-1 form-control code_post" type="number" placeholder="Code postal" required>
                 <div class="col form-control ville">
-                  <label for=”timeInput”> Ville :</label>
+                  <label for=”villes”> Ville :</label>
                   <select id="villes" aria-placeholder="Ville" required></select>
                 </div>
               </div>
               <div class="row mb-2">
                 <!-- <div class="col"> -->
-                <button type="submit" class=" col button_ajout">Ajouter un contact</button>
+                <button type="submit" class="btn btn-primary m-2 col button_ajout">Ajouter un contact</button>
                 <!-- </div> -->
                 <!-- <div class="col"> -->
-                <button type="button" class="col button_reset">Réinitialiser</button>
+                <button type="button" class="btn btn-outline-secondary m-2 col button_reset">Réinitialiser</button>
                 <!-- </div> -->
               </div>
+              <hr>
             </form>
-            <div id="showContact"></div>
+            <div class="container"></div>
+              <div class="row">
+                <h4>Détails contact :</h4>
+              </div>
+              <div class="row">
+                <div id="showContact" class="col">
+                  <p>(cliquez sur un nom)</p>
+                </div>
+              </div>
+                
           </div>
           <!--  Fin Code formulaire -->
         </div>
       </div>
     </main>
 
-    <footer class="container fixed-bottom">
+    <footer class="container">
       <div class="row">
-      <div class="col p-2 text-center">Made by Jessica, Clément and Florent.</div>
+        <div class="col p-2 text-center">Made by Jessica, Clément and Florent.</div>
       </div>
     </footer>
 
