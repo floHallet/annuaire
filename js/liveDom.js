@@ -27,41 +27,33 @@ const letters = [
   "Z",
 ];
 let retrievedContacts = [];
+const template = document.querySelector("#template");
+
+function createContact(contact) {
+  const clone = document.importNode(template, true);
+  const nomPersonne = clone.querySelector(".nom");
+  const prenomPersonne = clone.querySelector(".prenom");
+  const button = clone.querySelector("button");
+
+  clone.removeAttribute("hidden");
+  clone.removeAttribute("id");
+  clone.className = "ps-4 m-2 contact";
+
+  nomPersonne.textContent = `${contact["nom"]}`;
+  nomPersonne.addEventListener("click", showContact);
+  prenomPersonne.textContent = `${contact["prenom"]}`;
+  button.addEventListener("click", deleteContact);
+
+  const firstLetter = contact["nom"][0];
+  document.getElementById(firstLetter.toUpperCase()).appendChild(clone);
+}
 
 function getContacts(arr) {
-  const template = document.querySelector("#template");
   //tri des contacts par ordre alphabétique
-  arr.sort((a, b) => (a.nom > b.nom ? 1 : -1));
-  //on vide l'annuaire en cas de mise à jour de la liste
-  if ($(".contact").length) {
-    //console.log($(".contact").length, "contacts cleared");
-    $(".nom").off("click");
-    $(".contact button").off("click");
-    $(".contact").remove();
-  }
-  // 1 - Je boucle sur l'array de contacts
+  arr.sort((a,b) => (a.nom).localeCompare(b.nom));
   for (let contact of arr) {
-    // 2 - Je crée un élément avec le template et je sélectionne les balises concernées
-    const clone = document.importNode(template, true);
-    const nomPersonne = clone.querySelector(".nom");
-    const prenomPersonne = clone.querySelector(".prenom");
-    // 3 - Je remplis le template avec les données de l'objet "contacts"
-    nomPersonne.textContent = `${contact["nom"]}`;
-    prenomPersonne.textContent = `${contact["prenom"]}`;
-    // 4 - Je supprime l'attribut 'hidden' qui rendait invisible la div "template"
-    clone.removeAttribute("hidden");
-    clone.removeAttribute("id");
-    // 5 - J'ajoute la classe "personne" à mes div clonées
-    // clone.classList.add('personne')
-    clone.className = "ps-4 m-2 contact";
-    // 6 - J'ajoute les éléments au DOM
-    const firstLetter = contact["nom"][0];
-    document.getElementById(firstLetter.toUpperCase()).appendChild(clone);
+    createContact(contact);
   }
-  //déclaration des event listeners
-  $(".nom").on("click", showContact);
-  $(".contact button").on("click", deleteContact);
-  //stockage dans localStorage
   localStorage.setItem("mesContacts", JSON.stringify(arr));
 }
 
@@ -70,13 +62,17 @@ function deleteContact(e) {
   const list = parent.children;
   const nom = list[0].textContent;
   const prenom = list[1].textContent;
-  parent.remove();
   const indexToDelete = retrievedContacts.findIndex(
     (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
-  retrievedContacts.splice(indexToDelete, 1);
-  //stockage dans localStorage
-  localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+  const ask = confirm("Voulez-vous supprimer "+nom+" "+prenom+" ?");
+  if (ask) {
+    retrievedContacts.splice(indexToDelete, 1);
+    list[2].removeEventListener("click", deleteContact);
+    parent.remove();
+    //stockage dans localStorage
+    localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+  }
 }
 
 function showContact(e) {
@@ -126,8 +122,11 @@ function addContact(evt) {
     document.getElementById("monForm").reset();
     //on ajoute le contact à notre liste
     retrievedContacts.push(donnees_form);
-    //on met à jour l'affichage de notre annuaire
-    getContacts(retrievedContacts);
+    //stockage dans localStorage
+    localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+    //on met à jour notre annuaire
+    createContact(donnees_form);
+    alert(leNom+" "+lePrenom+" a bien été ajouté.");
   } else {
     alert("Le contact exite déjà");
   }
