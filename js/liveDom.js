@@ -33,7 +33,12 @@ function getContacts(arr) {
   //tri des contacts par ordre alphabétique
   arr.sort((a, b) => (a.nom > b.nom ? 1 : -1));
   //on vide l'annuaire en cas de mise à jour de la liste
-  $(".contact").remove();
+  if ($(".contact").length) {
+    //console.log($(".contact").length, "contacts cleared");
+    $(".nom").off("click");
+    $(".contact button").off("click");
+    $(".contact").remove();
+  }
   // 1 - Je boucle sur l'array de contacts
   for (let contact of arr) {
     // 2 - Je crée un élément avec le template et je sélectionne les balises concernées
@@ -66,18 +71,23 @@ function deleteContact(e) {
   const nom = list[0].textContent;
   const prenom = list[1].textContent;
   parent.remove();
-  const filteredContactList = retrievedContacts.filter(
-    (contact) => contact["nom"] !== nom 
+  const indexToDelete = retrievedContacts.findIndex(
+    (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
-  retrievedContacts = filteredContactList;
+  retrievedContacts.splice(indexToDelete, 1);
   //stockage dans localStorage
   localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
 }
 
 function showContact(e) {
-  const nom = e.target.textContent;
-  const contact = retrievedContacts.filter((contact) => contact["nom"] === nom);
-  newText = `<p>Nom / Prénom : ${contact[0]["nom"]} ${contact[0]["prenom"]}<br>Phone : ${contact[0]["phone"]}<br>Mail : ${contact[0]["mail"]}<br>Adresse : ${contact[0]["adresse"]}<br>Date de naissance : ${contact[0]["dateDeNaissance"]}<br>Code Postal : ${contact[0]["codePostal"]}</p>`;
+  const parent = e.target.parentNode;
+  const list = parent.children;
+  const nom = list[0].textContent;
+  const prenom = list[1].textContent;
+  const contact = retrievedContacts.find(
+    (contact) => contact["nom"] === nom && contact["prenom"] === prenom
+  );
+  newText = `<p>Nom / Prénom : ${contact["nom"]} ${contact["prenom"]}<br>Phone : ${contact["phone"]}<br>Mail : ${contact["mail"]}<br>Adresse : ${contact["adresse"]}<br>Date de naissance : ${contact["dateDeNaissance"]}<br>Code Postal : ${contact["codePostal"]}</p>`;
   $("#showContact").html(newText);
 }
 
@@ -93,23 +103,34 @@ function addContact(evt) {
   let lInfoSup = $(".info_sup").val();
   let leCodePost = $(".code_post").val();
   let laVille = $(".ville").val();
-  //on crée l'objet contact
-  let donnees_form = {
-    "nom": leNom,
-    "prenom": lePrenom,
-    "dateDeNaissance": laDate,
-    "phone": leTel,
-    "mail": leEmail,
-    "adresse": lAdresse,
-    "info_sup": lInfoSup,
-    "codePostal": leCodePost,
-    "ville": laVille
-  };
-  //on ajoute l'objet à notre liste
-  retrievedContacts.push(donnees_form);
-  document.getElementById("monForm").reset();
-  //on met à jour notre annuaire
-  getContacts(retrievedContacts);
+
+  //on regarde si le contact existe dejà
+  const contactAlreadyExist = retrievedContacts.find(
+    (contact) => contact["nom"] === leNom && contact["prenom"] === lePrenom
+  );
+
+  if (contactAlreadyExist === undefined) {
+    //on crée l'objet contact
+    let donnees_form = {
+      nom: leNom,
+      prenom: lePrenom,
+      dateDeNaissance: laDate,
+      phone: leTel,
+      mail: leEmail,
+      adresse: lAdresse,
+      info_sup: lInfoSup,
+      codePostal: leCodePost,
+      ville: laVille,
+    };
+    //on vide le formulaire
+    document.getElementById("monForm").reset();
+    //on ajoute le contact à notre liste
+    retrievedContacts.push(donnees_form);
+    //on met à jour l'affichage de notre annuaire
+    getContacts(retrievedContacts);
+  } else {
+    alert("Le contact exite déjà");
+  }
 }
 
 function findTown(e) {
@@ -128,7 +149,8 @@ function findTown(e) {
   });
 }
 
-$(function () {// Handler for .ready() called.
+$(function () {
+  // Handler for .ready() called.
 
   //initialise la page avec A B C...etc
   for (const letter of letters) {
@@ -156,7 +178,7 @@ $(function () {// Handler for .ready() called.
     retrievedContacts = contacts;
   }
 
-  //Ajout des contacts
+  //Ajout des contacts dans l'annuaire
   getContacts(retrievedContacts);
 
   //déclaration des event listeners du formulaire

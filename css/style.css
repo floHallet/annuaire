@@ -1,12 +1,13 @@
-#list {
-  max-height: 66vh;
-  background-color: lightblue;
-}
-
 main {
   background-color: rgb(151, 211, 151);
 }
-
 .nom {
   cursor: pointer;
+}
+.nom:hover{
+  border-bottom: 1px solid black;
+}
+#list {
+  max-height: 95vh;
+  background-color: lightblue;
 }
