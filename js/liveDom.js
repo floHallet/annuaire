@@ -39,10 +39,14 @@ function createContact(contact) {
   clone.removeAttribute("id");
   clone.className = "ps-4 m-2 contact";
 
-  nomPersonne.textContent = `${contact["nom"]}`;
-  nomPersonne.addEventListener("click", showContact);
-  prenomPersonne.textContent = `${contact["prenom"]}`;
-  button.addEventListener("click", deleteContact);
+  nomPersonne.textContent = contact["nom"];
+  nomPersonne.addEventListener("click", () =>
+    showContact(contact["nom"], contact["prenom"])
+  );
+  prenomPersonne.textContent = contact["prenom"];
+  button.addEventListener("click", (e) =>
+    deleteContact(e, contact["nom"], contact["prenom"])
+  );
 
   const firstLetter = contact["nom"][0];
   document.getElementById(firstLetter.toUpperCase()).appendChild(clone);
@@ -50,41 +54,52 @@ function createContact(contact) {
 
 function getContacts(arr) {
   //tri des contacts par ordre alphabétique
-  arr.sort((a,b) => (a.nom).localeCompare(b.nom));
+  arr.sort((a, b) => a.nom.localeCompare(b.nom));
   for (let contact of arr) {
     createContact(contact);
   }
+  //stockage
   localStorage.setItem("mesContacts", JSON.stringify(arr));
 }
 
-function deleteContact(e) {
+function deleteContact(e, nom, prenom) {
   const parent = e.target.parentNode;
   const list = parent.children;
-  const nom = list[0].textContent;
-  const prenom = list[1].textContent;
+  //const nom = list[0].textContent;
+  //const prenom = list[1].textContent;
   const indexToDelete = retrievedContacts.findIndex(
     (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
-  const ask = confirm("Voulez-vous supprimer "+nom+" "+prenom+" ?");
-  if (ask) {
-    retrievedContacts.splice(indexToDelete, 1);
-    list[2].removeEventListener("click", deleteContact);
-    parent.remove();
-    //stockage dans localStorage
-    localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+  if (indexToDelete !== -1) {
+    const ask = confirm("Voulez-vous supprimer " + nom + " " + prenom + " ?");
+    if (ask) {
+      //modif du DOM
+      list[2].removeEventListener("click", deleteContact);
+      parent.remove();
+      //modif de l'objet
+      retrievedContacts.splice(indexToDelete, 1);
+      //stockage dans localStorage
+      localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+    }
+  } else {
+    console.log("le contact n'a pas été trouvé...");
   }
 }
 
-function showContact(e) {
-  const parent = e.target.parentNode;
-  const list = parent.children;
-  const nom = list[0].textContent;
-  const prenom = list[1].textContent;
+function showContact(nom, prenom) {
+  //const parent = e.target.parentNode;
+  //const list = parent.children;
+  //const nom = list[0].textContent;
+  //const prenom = list[1].textContent;
   const contact = retrievedContacts.find(
     (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
-  newText = `<p>Nom / Prénom : ${contact["nom"]} ${contact["prenom"]}<br>Phone : ${contact["phone"]}<br>Mail : ${contact["mail"]}<br>Adresse : ${contact["adresse"]}<br>Date de naissance : ${contact["dateDeNaissance"]}<br>Code Postal : ${contact["codePostal"]}</p>`;
-  $("#showContact").html(newText);
+  if (contact) {
+    newText = `<p>Nom / Prénom : ${contact["nom"]} ${contact["prenom"]}<br>Phone : ${contact["phone"]}<br>Mail : ${contact["mail"]}<br>Adresse : ${contact["adresse"]}<br>Date de naissance : ${contact["dateDeNaissance"]}<br>Code Postal : ${contact["codePostal"]}</p>`;
+    $("#showContact").html(newText);
+  } else {
+    console.log("le contact n'a pas été trouvé...");
+  }
 }
 
 function addContact(evt) {
@@ -107,7 +122,7 @@ function addContact(evt) {
 
   if (contactAlreadyExist === undefined) {
     //on crée l'objet contact
-    let donnees_form = {
+    const donnees_form = {
       nom: leNom,
       prenom: lePrenom,
       dateDeNaissance: laDate,
@@ -126,7 +141,7 @@ function addContact(evt) {
     localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
     //on met à jour notre annuaire
     createContact(donnees_form);
-    alert(leNom+" "+lePrenom+" a bien été ajouté.");
+    alert(leNom + " " + lePrenom + " a bien été ajouté.");
   } else {
     alert("Le contact exite déjà");
   }
