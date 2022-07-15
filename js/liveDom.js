@@ -27,9 +27,9 @@ const letters = [
   "Z",
 ];
 let retrievedContacts = [];
-const template = document.querySelector("#template");
 
 function createContact(contact) {
+  const template = document.querySelector("#template");
   const clone = document.importNode(template, true);
   const nomPersonne = clone.querySelector(".nom");
   const prenomPersonne = clone.querySelector(".prenom");
