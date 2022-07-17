@@ -10,7 +10,10 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="./css/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -25,8 +28,10 @@
       <div class="row">
         <h1 class="text-center p-2">Mes contacts</h1>
       </div>
-      <div class="row">
-        <div class="lettersGroup border-top d-flex flex-wrap justify-content-evenly"></div>
+      <div class="row" id="hideOnMobile">
+        <div
+          class="lettersGroup border-top d-flex flex-wrap justify-content-center"
+        ></div>
       </div>
     </header>
 
@@ -41,50 +46,123 @@
         <div id="list" class="col-md-6 p-2 overflow-scroll"></div>
         <div class="col-md-6">
           <!--  Code formulaire -->
-            <div class="container">
-              <form class="row g-3 pt-3">
-                <div class="col-md-6">
-                  <label for="inputNom" class="form-label">Nom</label>
-                  <input type="text" class="form-control" id="inputNom" required placeholder="">
+          <div class="container">
+            <form class="row g-3 pt-3">
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputNom"
+                    required
+                    placeholder="Dupont"
+                  />
+                  <label for="inputNom">Nom</label>
                 </div>
-                <div class="col-md-6">
-                  <label for="inputPrenom" class="form-label">Prénom</label>
-                  <input type="text" class="form-control" id="inputPrenom" required placeholder="">
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputPrenom"
+                    required
+                    placeholder="Pierre"
+                  />
+                  <label for="inputPrenom">Prénom</label>
                 </div>
-                <div class="col-12">
+              </div>
+              <div class="col-12">
+                <div class="form-floating mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputInfo"
+                    placeholder="Date de naissance..."
+                  />
                   <label for="inputInfo" class="form-label">Informations</label>
-                  <input type="text" class="form-control" id="inputInfo" placeholder="">
                 </div>
-                <div class="col-12">
-                  <label for="inputAddress" class="form-label">Adresse</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="">
+              </div>
+              <div class="col-12">
+                <div class="form-floating mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputAddress"
+                    placeholder="3 avenue de la République"
+                  />
+                  <label for="inputAddress">Adresse</label>
                 </div>
-                <div class="col-5">
-                  <label for="inputPhone" class="form-label">Tél</label>
-                  <input type="tel" class="form-control" id="inputPhone">
+              </div>
+              <div class="col-md-5">
+                <div class="form-floating mb-1">
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="inputPhone"
+                    placeholder="0140949842"
+                  />
+                  <label for="inputPhone">Tél</label>
                 </div>
-                <div class="col-7">
-                  <label for="inputEmail" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="inputEmail">
+              </div>
+              <div class="col-md-7">
+                <div class="form-floating mb-1">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="inputEmail"
+                    placeholder="nom.prenom@domain.fr"
+                  />
+                  <label for="inputEmail">Email</label>
                 </div>
-                <div class="col-md-4">
-                  <label for="inputState" class="form-label">Code Postal</label>
-                  <input type="text" class="form-control" id="inputState" required>
+              </div>
+              <div class="col-md-5">
+                <div class="form-floating mb-1">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputState"
+                    placeholder="34000"
+                    required
+                  />
+                  <label for="inputState">Code Postal</label>
                 </div>
-                <div class="col-md-8">
-                  <label for="inputCity" class="form-label">Ville</label>
-                  <select class="form-select" id="inputCity" required></select>
+              </div>
+              <div class="col-md-7">
+                <div class="form-floating mb-1">
+                  <select
+                    class="form-select"
+                    id="inputCity"
+                    placeholder="Montpellier"
+                    required
+                  ></select>
+                  <label for="inputCity">Ville</label>
                 </div>
-                <div class="col-12 pt-1">
-                  <button type="submit" class="btn btn-primary me-3">Soumettre</button>
-                  <button type="reset" class="btn btn-warning">Réinitialiser</button>
-                </div>
-              </form>
-              <hr>
-              <p class="h5 pt-2">Utiliser le formulaire ci-dessus pour modifier ou ajouter vos contacts.</p>
-            </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary me-3">
+                  Soumettre
+                </button>
+                <button type="reset" class="btn btn-warning">
+                  Réinitialiser
+                </button>
+              </div>
+            </form>
+            <hr />
+            <p class="h5 pt-1">Comment ca marche ?</p>
+            <p class="h6">Cliquez sur un nom de la liste pour afficher les détails d'un contact.</p>
+            <p class="h6">
+              Utilisez le formulaire ci-dessus pour modifier ou ajouter un
+              contact.
+            </p>
+          </div>
         </div>
       </div>
     </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

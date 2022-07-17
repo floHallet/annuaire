@@ -9,9 +9,19 @@ main {
 }
 #list {
   height: 75vh;
+  min-height: 606px;
   background-color: lightblue;
 }
-
 button[class*="btn-outline-danger"] {
   border: none;
+}
+
+@media only screen and (max-width: 767px) {
+  #list {
+    height: 50vh;
+    min-height: auto;
+  }
+  #hideOnMobile {
+    display: none;
+  }
 }

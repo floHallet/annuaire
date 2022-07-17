@@ -211,4 +211,5 @@ $(function () {
   //déclaration des event listeners du formulaire
   $("#inputState").on("change", findTown);
   $("form").submit(addContact);
+  $("button[type=\"reset\"]").click(() => $("#inputCity").empty());
 });
