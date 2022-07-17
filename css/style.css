@@ -8,6 +8,10 @@ main {
   border-bottom: 1px solid black;
 }
 #list {
-  max-height: 95vh;
+  height: 75vh;
   background-color: lightblue;
+}
+
+button[class*="btn-outline-danger"] {
+  border: none;
 }

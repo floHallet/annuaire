@@ -27,9 +27,9 @@ const letters = [
   "Z",
 ];
 let retrievedContacts = [];
+let template = undefined;
 
 function createContact(contact) {
-  const template = document.querySelector("#template");
   const clone = document.importNode(template, true);
   const nomPersonne = clone.querySelector(".nom");
   const prenomPersonne = clone.querySelector(".prenom");
@@ -37,7 +37,7 @@ function createContact(contact) {
 
   clone.removeAttribute("hidden");
   clone.removeAttribute("id");
-  clone.className = "ps-4 m-2 contact";
+  //clone.className = "ps-4 m-2 contact";
 
   nomPersonne.textContent = contact["nom"];
   nomPersonne.addEventListener("click", () =>
@@ -95,8 +95,24 @@ function showContact(nom, prenom) {
     (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
   if (contact) {
-    newText = `<p>Nom / Prénom : ${contact["nom"]} ${contact["prenom"]}<br>Phone : ${contact["phone"]}<br>Mail : ${contact["mail"]}<br>Adresse : ${contact["adresse"]}<br>Date de naissance : ${contact["dateDeNaissance"]}<br>Code Postal : ${contact["codePostal"]}</p>`;
-    $("#showContact").html(newText);
+    $("#inputNom").val(contact["nom"]);
+    $("#inputPrenom").val(contact["prenom"]);
+    $("#inputInfo").val(contact["dateDeNaissance"]);
+    $("#inputPhone").val(contact["phone"]);
+    $("#inputEmail").val(contact["mail"]);
+    $("#inputAddress").val(contact["adresse"]);
+    $("#inputState").val(contact["codePostal"]);
+    if (contact["ville"]) {
+      $("#inputCity").append("<option selected>" + contact["ville"] + "</option>");
+    } else {
+      $("#inputCity").empty();
+    }
+    /*newText = `<p>Nom / Prénom : ${contact["nom"]} ${contact["prenom"]}<br>
+              Adresse : ${contact["adresse"]}<br>
+              Phone : ${contact["phone"]}<br>
+              Mail : ${contact["mail"]}<br>
+              Code Postal / Ville : ${contact["codePostal"]} ${contact["ville"] || ""}</p>`;
+    $("#showContact").html(newText);*/
   } else {
     console.log("le contact n'a pas été trouvé...");
   }
@@ -104,57 +120,54 @@ function showContact(nom, prenom) {
 
 function addContact(evt) {
   evt.preventDefault();
-  //on récupère les valeurs des champs
-  let leNom = $(".fnom").val();
-  let lePrenom = $(".fprenom").val();
-  let laDate = $(".date").val();
-  let leTel = $(".tel").val();
-  let leEmail = $(".mail").val();
-  let lAdresse = $(".adresse").val();
-  let lInfoSup = $(".info_sup").val();
-  let leCodePost = $(".code_post").val();
-  let laVille = $(".ville").val();
-
+  const nom = $("#inputNom").val();
+  const prenom = $("#inputPrenom").val();
+  const newContact = {
+    nom: nom,
+    prenom: prenom,
+    dateDeNaissance: $("#inputInfo").val(),
+    phone: $("#inputPhone").val(),
+    mail: $("#inputEmail").val(),
+    adresse: $("#inputAddress").val(),
+    codePostal: $("#inputState").val(),
+    ville: $("#inputCity").val(),
+  };
   //on regarde si le contact existe dejà
-  const contactAlreadyExist = retrievedContacts.find(
-    (contact) => contact["nom"] === leNom && contact["prenom"] === lePrenom
+  const contactAlreadyExist = retrievedContacts.findIndex(
+    (contact) => contact["nom"] === nom && contact["prenom"] === prenom
   );
 
-  if (contactAlreadyExist === undefined) {
-    //on crée l'objet contact
-    const donnees_form = {
-      nom: leNom,
-      prenom: lePrenom,
-      dateDeNaissance: laDate,
-      phone: leTel,
-      mail: leEmail,
-      adresse: lAdresse,
-      info_sup: lInfoSup,
-      codePostal: leCodePost,
-      ville: laVille,
-    };
+  if (contactAlreadyExist === -1) { //on crée le contact
     //on vide le formulaire
-    document.getElementById("monForm").reset();
+    $("form").trigger("reset");
+    $("#inputCity").empty();
     //on ajoute le contact à notre liste
-    retrievedContacts.push(donnees_form);
+    retrievedContacts.push(newContact);
     //stockage dans localStorage
     localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
     //on met à jour notre annuaire
-    createContact(donnees_form);
-    alert(leNom + " " + lePrenom + " a bien été ajouté.");
-  } else {
-    alert("Le contact exite déjà");
+    createContact(newContact);
+    alert(nom + " " + prenom + " a bien été ajouté.");
+  } else { //sinon on update le contact
+    const ask = confirm("Voulez-vous mettre à jour " + nom + " " + prenom + " ?");
+    if (ask) {
+      $("form").trigger("reset");
+      $("#inputCity").empty();
+      retrievedContacts[contactAlreadyExist] = newContact;
+      localStorage.setItem("mesContacts", JSON.stringify(retrievedContacts));
+      alert(nom + " " + prenom + " a bien été mis à jour.");
+    }
   }
 }
 
 function findTown(e) {
   const url =
     "https://apicarto.ign.fr/api/codes-postaux/communes/" + e.target.value;
-  $("#villes").empty();
+  $("#inputCity").empty();
   $.ajax(url, {
     success: function (resultat) {
       for (let city of resultat) {
-        $("#villes").append("<option>" + city.nomCommune + "</option>");
+        $("#inputCity").append("<option>" + city.nomCommune + "</option>");
       }
     },
     error: function (err) {
@@ -165,7 +178,7 @@ function findTown(e) {
 
 $(function () {
   // Handler for .ready() called.
-
+  template = document.querySelector("#template");
   //initialise la page avec A B C...etc
   for (const letter of letters) {
     //initialisation du header
@@ -186,7 +199,7 @@ $(function () {
 
   //check for a localStorage
   if (localStorage.getItem("mesContacts")) {
-    alert("Une sauvegarde locale a été trouvée");
+    console.log("Une sauvegarde locale a été trouvée");
     retrievedContacts = JSON.parse(localStorage.getItem("mesContacts"));
   } else {
     retrievedContacts = contacts;
@@ -196,9 +209,6 @@ $(function () {
   getContacts(retrievedContacts);
 
   //déclaration des event listeners du formulaire
-  $(".code_post").on("change", findTown);
-  $("#monForm").submit(addContact);
-  $(".button_reset").on("click", () =>
-    document.getElementById("monForm").reset()
-  );
+  $("#inputState").on("change", findTown);
+  $("form").submit(addContact);
 });

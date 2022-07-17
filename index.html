@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,10 +30,10 @@
       </div>
     </header>
 
-    <div id="template" hidden>
+    <div id="template" class="ps-4 m-2" hidden>
       <span class="nom" title="cliquez pour afficher"></span>
       <span class="prenom"></span>
-      <button class="btn bi bi-folder-x"></button>
+      <button class="btn btn-outline-danger btn-lg bi bi-folder-x"></button>
     </div>
 
     <main class="container">
@@ -41,61 +41,50 @@
         <div id="list" class="col-md-6 p-2 overflow-scroll"></div>
         <div class="col-md-6">
           <!--  Code formulaire -->
-          <div class="container">
-            <form id="monForm" class="mt-4">
-              <h4>Formulaire d'ajout de contact :</h4>
-              <div class="row mb-2 ">
-                <input class="col m-1 form-control fnom" type="text" placeholder="Nom" required>
-                <input class="col m-1 form-control fprenom" type="text" placeholder="Prénom" required>
-              </div>
-              <div class="row mb-2">
-                <input class="col m-1 form-control date" type="date">
-                <div class="col"></div>
-              </div>
-              <div class="row mb-2">
-                <input class="col m-1 form-control tel" type="tel" placeholder="Téléphone">
-                <input class="col m-1 form-control mail" type="email" placeholder="E-mail">
-              </div>
-              <div class="row mb-2">
-                <input class="col m-1 form-control adresse" type="text" placeholder="Adresse">
-                <input class="col m-1 form-control info_sup" type="text" placeholder="Info supplémentaire">
-              </div>
-              <div class="row mb-2">
-                <input class="col m-1 form-control code_post" type="number" placeholder="Code postal" required>
-                <div class="col form-control ville">
-                  <label for=”villes”> Ville :</label>
-                  <select id="villes" aria-placeholder="Ville" required></select>
+            <div class="container">
+              <form class="row g-3 pt-3">
+                <div class="col-md-6">
+                  <label for="inputNom" class="form-label">Nom</label>
+                  <input type="text" class="form-control" id="inputNom" required placeholder="">
                 </div>
-              </div>
-              <div class="row mb-2">
-                <!-- <div class="col"> -->
-                <button type="submit" class="btn btn-primary m-2 col button_ajout">Ajouter un contact</button>
-                <!-- </div> -->
-                <!-- <div class="col"> -->
-                <button type="button" class="btn btn-outline-secondary m-2 col button_reset">Réinitialiser</button>
-                <!-- </div> -->
-              </div>
+                <div class="col-md-6">
+                  <label for="inputPrenom" class="form-label">Prénom</label>
+                  <input type="text" class="form-control" id="inputPrenom" required placeholder="">
+                </div>
+                <div class="col-12">
+                  <label for="inputInfo" class="form-label">Informations</label>
+                  <input type="text" class="form-control" id="inputInfo" placeholder="">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress" class="form-label">Adresse</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="">
+                </div>
+                <div class="col-5">
+                  <label for="inputPhone" class="form-label">Tél</label>
+                  <input type="tel" class="form-control" id="inputPhone">
+                </div>
+                <div class="col-7">
+                  <label for="inputEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="inputEmail">
+                </div>
+                <div class="col-md-4">
+                  <label for="inputState" class="form-label">Code Postal</label>
+                  <input type="text" class="form-control" id="inputState" required>
+                </div>
+                <div class="col-md-8">
+                  <label for="inputCity" class="form-label">Ville</label>
+                  <select class="form-select" id="inputCity" required></select>
+                </div>
+                <div class="col-12 pt-1">
+                  <button type="submit" class="btn btn-primary me-3">Soumettre</button>
+                  <button type="reset" class="btn btn-warning">Réinitialiser</button>
+                </div>
+              </form>
               <hr>
-            </form>
-            <div class="container"></div>
-              <div class="row">
-                <h4>Détails contact :</h4>
-              </div>
-              <div class="row">
-                <div id="showContact" class="col">
-                  <p>(cliquez sur un nom)</p>
-                </div>
-              </div>
-          </div>
-          <!--  Fin Code formulaire -->
+              <p class="h5 pt-2">Utiliser le formulaire ci-dessus pour modifier ou ajouter vos contacts.</p>
+            </div>
         </div>
       </div>
     </main>
-
-    <footer class="container">
-      <div class="row">
-        <div class="col p-2 text-center">Made by Jessica, Clément and Florent.</div>
-      </div>
-    </footer>
   </body>
 </html>
