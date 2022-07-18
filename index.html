@@ -2,6 +2,10 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="Gérez vos contacts avec ce site réalisé en formation frontend."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mon annuaire</title>
     <link
@@ -14,7 +18,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/style.css"/>
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -26,7 +30,7 @@
   <body class="bg-light">
     <header class="container">
       <div class="row">
-        <h1 class="text-center p-2">Mes contacts</h1>
+        <h1 class="text-center p-1 pt-2">Mes contacts</h1>
       </div>
       <div class="row" id="hideOnMobile">
         <div
@@ -38,7 +42,10 @@
     <div id="template" class="ps-4 m-2" hidden>
       <span class="nom" title="cliquez pour afficher"></span>
       <span class="prenom"></span>
-      <button class="btn btn-outline-danger btn-lg bi bi-folder-x"></button>
+      <button
+        class="btn btn-outline-danger btn-lg bi bi-folder-x"
+        aria-label="supprimer"
+      ></button>
     </div>
 
     <main class="container">
@@ -149,9 +156,10 @@
               </div>
             </form>
             <hr />
-            <p class="h5 pt-1">Comment ca marche ?</p>
-            <p class="h6">Cliquez sur un nom de la liste pour afficher les détails d'un contact.</p>
-            <p class="h6">
+            <p class="h5">Comment ça marche ?</p>
+            <p>
+              Cliquez sur un nom de la liste pour afficher les détails du
+              contact.<br>
               Utilisez le formulaire ci-dessus pour modifier ou ajouter un
               contact.
             </p>
@@ -159,10 +167,10 @@
         </div>
       </div>
     </main>
-    <script
+    <!--<script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
-    ></script>
+    </script>-->
   </body>
 </html>
